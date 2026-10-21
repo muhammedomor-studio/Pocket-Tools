@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pocket Tools - All-in-One Utility Suite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .dark .glass {
+            background: rgba(30, 41, 59, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-green-500 to-emerald-600 p-2.5 rounded-xl text-white shadow-lg shadow-green-500/20">
+                    <i class="fa-solid fa-toolbox text-xl"></i>
+                </div>
+                <span class="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">Pocket Tools</span>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <a href="/docs" target="_blank" class="hidden sm:flex items-center space-x-1 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-green-600">
+                    <i class="fa-solid fa-code"></i>
+                    <span>API Docs</span>
+                </a>
+                <button id="themeToggle" class="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:ring-2 hover:ring-green-500">
+                    <i class="fa-solid fa-moon dark:hidden"></i>
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="text-center my-6">
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Essential Online Developer & File Utilities</h1>
+            <p class="mt-2 text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">Fast, secure, and privacy-focused utility tools right in your browser. Powered by FastAPI.</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap justify-center gap-2 mb-8" id="toolTabs">
+            <button onclick="switchTab('qr')" id="tab-qr" class="tab-btn active-tab px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-2 transition-all duration-150 bg-green-600 text-white shadow-md">
+                <i class="fa-solid fa-qrcode"></i><span>QR Generator</span>
+            </button>
+            <button onclick="switchTab('pdf')" id="tab-pdf" class="tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-2 transition-all duration-150 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-file-pdf"></i><span>PDF Extractor</span>
+            </button>
+            <button onclick="switchTab('img')" id="tab-img" class="tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-2 transition-all duration-150 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-image"></i><span>Image Compressor</span>
+            </button>
+            <button onclick="switchTab('text')" id="tab-text" class="tab-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center space-x-2 transition-all duration-150 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <i class="fa-solid fa-[#font]"></i><i class="fa-solid fa-align-left"></i><span>Text Analyzer</span>
+            </button>
+        </div>
+
+        <!-- TOOL 1: QR CODE -->
+        <div id="tool-qr" class="tool-content max-w-2xl mx-auto bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-qrcode text-green-500"></i> Generate Custom QR Code</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Text or URL</label>
+                    <input type="text" id="qrText" placeholder="https://example.com or any text" class="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 focus:ring-2 focus:ring-green-500 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">QR Color</label>
+                        <input type="color" id="qrFill" value="#000000" class="w-full h-10 rounded-xl cursor-pointer border border-slate-300 dark:border-slate-600 p-1 bg-slate-50 dark:bg-slate-900">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Background Color</label>
+                        <input type="color" id="qrBg" value="#ffffff" class="w-full h-10 rounded-xl cursor-pointer border border-slate-300 dark:border-slate-600 p-1 bg-slate-50 dark:bg-slate-900">
+                    </div>
+                </div>
+                <button onclick="generateQR()" class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg transition">Generate QR Code</button>
+            </div>
+            
+            <div id="qrResult" class="mt-6 hidden flex flex-col items-center p-4 bg-slate-100 dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-700">
+                <img id="qrImg" src="" alt="QR Code" class="max-w-[200px] rounded-lg shadow-md mb-4">
+                <a id="qrDownload" download="qrcode.png" class="px-4 py-2 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-800 text-sm font-semibold rounded-lg hover:opacity-90">Download QR Code</a>
+            </div>
+        </div>
+
+        <!-- TOOL 2: PDF EXTRACTOR -->
+        <div id="tool-pdf" class="tool-content hidden max-w-2xl mx-auto bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-file-pdf text-red-500"></i> Extract Text from PDF</h2>
+            <div class="space-y-4">
+                <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-6 text-center hover:border-green-500 transition">
+                    <input type="file" id="pdfFileInput" accept=".pdf" class="hidden" onchange="updateFileName('pdfFileInput', 'pdfFileName')">
+                    <label for="pdfFileInput" class="cursor-pointer flex flex-col items-center">
+                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-slate-400 mb-2"></i>
+                        <span class="font-medium text-slate-600 dark:text-slate-300">Click to upload PDF document</span>
+                        <span id="pdfFileName" class="text-xs text-green-500 mt-2 font-bold"></span>
+                    </label>
+                </div>
+                <button onclick="extractPDF()" class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg transition">Extract Text</button>
+            </div>
+
+            <div id="pdfResult" class="mt-6 hidden">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="pdfMeta" class="text-xs font-bold text-slate-500"></span>
+                    <button onclick="copyToClipboard('pdfOutputText')" class="text-xs text-green-600 dark:text-green-400 hover:underline"><i class="fa-regular fa-copy"></i> Copy Text</button>
+                </div>
+                <textarea id="pdfOutputText" readonly class="w-full h-48 p-3 text-xs font-mono rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 outline-none"></textarea>
+            </div>
+        </div>
+
+        <!-- TOOL 3: IMAGE COMPRESSOR -->
+        <div id="tool-img" class="tool-content hidden max-w-2xl mx-auto bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-image text-blue-500"></i> Compress & Convert Image</h2>
+            <div class="space-y-4">
+                <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-6 text-center hover:border-green-500 transition">
+                    <input type="file" id="imgFileInput" accept="image/*" class="hidden" onchange="updateFileName('imgFileInput', 'imgFileName')">
+                    <label for="imgFileInput" class="cursor-pointer flex flex-col items-center">
+                        <i class="fa-solid fa-file-image text-3xl text-slate-400 mb-2"></i>
+                        <span class="font-medium text-slate-600 dark:text-slate-300">Click to select an image</span>
+                        <span id="imgFileName" class="text-xs text-green-500 mt-2 font-bold"></span>
+                    </label>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Target Format</label>
+                        <select id="imgFormat" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 outline-none">
+                            <option value="JPEG">JPEG</option>
+                            <option value="WEBP">WEBP</option>
+                            <option value="PNG">PNG</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Quality (10 - 100)</label>
+                        <input type="number" id="imgQuality" value="75" min="10" max="100" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 outline-none">
+                    </div>
+                </div>
+                <button onclick="compressImage()" class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-lg transition">Process & Download</button>
+            </div>
+        </div>
+
+        <!-- TOOL 4: TEXT ANALYZER -->
+        <div id="tool-text" class="tool-content hidden max-w-2xl mx-auto bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-align-left text-amber-500"></i> Text Analyzer & Formatter</h2>
+            <div class="space-y-4">
+                <textarea id="analyzerInput" placeholder="Paste your text here..." class="w-full h-32 p-3 text-sm rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 outline-none focus:ring-2 focus:ring-green-500"></textarea>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button onclick="analyzeText('analyze')" class="py-2 bg-slate-200 dark:bg-slate-700 text-xs font-bold rounded-lg hover:bg-slate-300">Analyze Stats</button>
+                    <button onclick="analyzeText('uppercase')" class="py-2 bg-slate-200 dark:bg-slate-700 text-xs font-bold rounded-lg hover:bg-slate-300">UPPERCASE</button>
+                    <button onclick="analyzeText('lowercase')" class="py-2 bg-slate-200 dark:bg-slate-700 text-xs font-bold rounded-lg hover:bg-slate-300">lowercase</button>
+                    <button onclick="analyzeText('clean')" class="py-2 bg-slate-200 dark:bg-slate-700 text-xs font-bold rounded-lg hover:bg-slate-300">Trim Extra Spaces</button>
+                </div>
+            </div>
+
+            <div id="textResult" class="mt-6 hidden bg-slate-100 dark:bg-slate-900 p-4 rounded-xl border border-slate-300 dark:border-slate-700 text-xs">
+                <pre id="textStatsOutput" class="whitespace-pre-wrap font-mono"></pre>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <p>&copy; 2026 Pocket Tools. Built with FastAPI, Tailwind & Python. Ready for Render Deployment.</p>
+    </footer>
+
+    <!-- JS Logic -->
+    <script>
+        // Theme toggle
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tool-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-green-600', 'text-white', 'shadow-md');
+                btn.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+            });
+
+            document.getElementById(`tool-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-600', 'dark:text-slate-300');
+            activeBtn.classList.add('bg-green-600', 'text-white', 'shadow-md');
+        }
+
+        function updateFileName(inputId, nameId) {
+            const input = document.getElementById(inputId);
+            if (input.files.length > 0) {
+                document.getElementById(nameId).innerText = input.files[0].name;
+            }
+        }
+
+        async function generateQR() {
+            const text = document.getElementById('qrText').value;
+            const fill = encodeURIComponent(document.getElementById('qrFill').value);
+            const bg = encodeURIComponent(document.getElementById('qrBg').value);
+            if(!text) return alert("Please enter text or URL");
+
+            const url = `/api/v1/generate-qr?text=${encodeURIComponent(text)}&fill_color=${fill}&back_color=${bg}`;
+            document.getElementById('qrImg').src = url;
+            document.getElementById('qrDownload').href = url;
+            document.getElementById('qrResult').classList.remove('hidden');
+        }
+
+        async function extractPDF() {
+            const input = document.getElementById('pdfFileInput');
+            if (!input.files.length) return alert('Please select a PDF file.');
+
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+
+            const res = await fetch('/api/v1/pdf-to-text', { method: 'POST', body: formData });
+            const data = await res.json();
+
+            if (res.ok) {
+                document.getElementById('pdfMeta').innerText = `Pages: ${data.total_pages} | File: ${data.filename}`;
+                document.getElementById('pdfOutputText').value = data.full_text;
+                document.getElementById('pdfResult').classList.remove('hidden');
+            } else {
+                alert(data.detail || 'Extraction failed');
+            }
+        }
+
+        async function compressImage() {
+            const input = document.getElementById('imgFileInput');
+            if (!input.files.length) return alert('Please select an image file.');
+
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+            formData.append('output_format', document.getElementById('imgFormat').value);
+            formData.append('quality', document.getElementById('imgQuality').value);
+
+            const res = await fetch('/api/v1/process-image', { method: 'POST', body: formData });
+            if (res.ok) {
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `compressed_image.${document.getElementById('imgFormat').value.toLowerCase()}`;
+                a.click();
+            } else {
+                alert('Processing failed.');
+            }
+        }
+
+        async function analyzeText(action) {
+            const text = document.getElementById('analyzerInput').value;
+            if(!text) return alert('Please input text.');
+
+            const formData = new FormData();
+            formData.append('text', text);
+            formData.append('action', action);
+
+            const res = await fetch('/api/v1/text-utility', { method: 'POST', body: formData });
+            const data = await res.json();
+
+            if (res.ok) {
+                if(data.result) {
+                    document.getElementById('analyzerInput').value = data.result;
+                } else {
+                    document.getElementById('textStatsOutput').innerText = JSON.stringify(data, null, 2);
+                    document.getElementById('textResult').classList.remove('hidden');
+                }
+            }
+        }
+
+        function copyToClipboard(id) {
+            const copyText = document.getElementById(id);
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            alert("Copied to clipboard!");
+        }
+    </script>
+</body>
+</html>
